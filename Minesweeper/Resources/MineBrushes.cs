@@ -20,6 +20,10 @@ namespace Minesweeper.Resources
         /// <summary>
         /// The Brush for the cell containing the Number 1
         /// </summary>
+        public Brush Zero { get; set; }
+        /// <summary>
+        /// The Brush for the cell with no adjacent mines
+        /// </summary>
         public Brush One { get; set; }
         /// <summary>
         /// The Brush for the cell containing the Number 2
@@ -90,14 +94,15 @@ namespace Minesweeper.Resources
         public static BrushTheme Default { get; } = new BrushTheme()
         {
             Hidden = Brushes.Blue,
-            One = GetLabelBrush(Brushes.Black, Brushes.Blue, "1"),
-            Two = GetLabelBrush(Brushes.Black, Brushes.Blue, "2"),
-            Three = GetLabelBrush(Brushes.Black, Brushes.Blue, "3"),
-            Four = GetLabelBrush(Brushes.Black, Brushes.Blue, "4"),
-            Five = GetLabelBrush(Brushes.Black, Brushes.Blue, "5"),
-            Six = GetLabelBrush(Brushes.Black, Brushes.Blue, "6"),
-            Seven = GetLabelBrush(Brushes.Black, Brushes.Blue, "7"),
-            Eight = GetLabelBrush(Brushes.Black, Brushes.Blue, "8"),
+            Zero = Brushes.CadetBlue,
+            One = GetLabelBrush(Brushes.Black, Brushes.CadetBlue, "1"),
+            Two = GetLabelBrush(Brushes.Black, Brushes.CadetBlue, "2"),
+            Three = GetLabelBrush(Brushes.Black, Brushes.CadetBlue, "3"),
+            Four = GetLabelBrush(Brushes.Black, Brushes.CadetBlue, "4"),
+            Five = GetLabelBrush(Brushes.Black, Brushes.CadetBlue, "5"),
+            Six = GetLabelBrush(Brushes.Black, Brushes.CadetBlue, "6"),
+            Seven = GetLabelBrush(Brushes.Black, Brushes.CadetBlue, "7"),
+            Eight = GetLabelBrush(Brushes.Black, Brushes.CadetBlue, "8"),
             Flagged = Brushes.Green,
             Mine = Brushes.Black,
             Exploded = Brushes.Red,
