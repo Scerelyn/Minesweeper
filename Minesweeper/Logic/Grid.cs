@@ -18,6 +18,12 @@ namespace Minesweeper.Logic
         public EventHandler OnMazeGenerated;
         public EventHandler OnMineClicked;
 
+        public Grid()
+        {
+            OnMazeGenerated += (sender,args) => { };
+            OnMineClicked += (sender, args) => { };
+        }
+
         public void GenerateCells(int width = 10, int height = 10, int mines = 15)
         {
             Cells = new Cell[width, height];
@@ -33,6 +39,7 @@ namespace Minesweeper.Logic
             {
                 Cells[(int)p.X, (int)p.Y].IsMine = true;
             }
+            OnMazeGenerated(this, null);
         }
 
         public void ClickCell(int x, int y)
