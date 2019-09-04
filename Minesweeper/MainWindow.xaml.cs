@@ -83,16 +83,7 @@ namespace Minesweeper
         {
             switch (args.Key)
             {
-                case Key.Up:
-                    ViewWindow.Width += 5;
-                    ViewWindow.Height += 5;
-                    break;
-                case Key.Down:
-                    ViewWindow.Width -= ViewWindow.Width >= 5 ? 5 : 0;
-                    ViewWindow.Height -= ViewWindow.Height >= 5 ? 5 : 0;
-                    break;
-                default:
-                    break;
+                //TODO: keyboard controls
             }
         }
     }

@@ -4,14 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Minesweeper"
+        xmlns:paz="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
         mc:Ignorable="d"
         Title="MainWindow" Height="540" Width="500">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Test"/>
         </Menu>
-        <Viewbox x:Name="ViewWindow"  DockPanel.Dock="Top" Width="500" Height="500">
+        <paz:ZoomBorder Name="zoomBorder" Stretch="None" ZoomSpeed="1.2" 
+                        Background="AliceBlue" ClipToBounds="True" Focusable="True"
+                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PanButton="Right">
             <Grid x:Name="CellContainerGrid"></Grid>
-        </Viewbox>
+
+        </paz:ZoomBorder>
     </DockPanel>
 </Window>
