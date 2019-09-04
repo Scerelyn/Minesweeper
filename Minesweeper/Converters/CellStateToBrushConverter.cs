@@ -22,6 +22,8 @@ namespace Minesweeper.Converters
                 {
                     case CellState.Hidden:
                         return ActiveTheme.Hidden;
+                    case CellState.Zero:
+                        return ActiveTheme.Zero;
                     case CellState.One:
                         return ActiveTheme.One;
                     case CellState.Two:

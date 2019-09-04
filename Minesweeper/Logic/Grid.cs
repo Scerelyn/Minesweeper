@@ -10,7 +10,7 @@ namespace Minesweeper.Logic
     /// <summary>
     /// The class containing Cell objects and handles logic and behaviors between them
     /// </summary>
-    public class Grid
+    public class CellGrid
     {
         private Random rng = new Random();
         public Cell[,] Cells { get; set; }
@@ -18,7 +18,7 @@ namespace Minesweeper.Logic
         public EventHandler OnMazeGenerated;
         public EventHandler OnMineClicked;
 
-        public Grid()
+        public CellGrid()
         {
             OnMazeGenerated += (sender,args) => { };
             OnMineClicked += (sender, args) => { };
@@ -39,6 +39,15 @@ namespace Minesweeper.Logic
             {
                 Cells[(int)p.X, (int)p.Y].IsMine = true;
             }
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Cells[x, y].Surrounding = GetSurrounding(x,y);
+                }
+            }
+
             OnMazeGenerated(this, null);
         }
 
@@ -62,8 +71,12 @@ namespace Minesweeper.Logic
             }
         }
 
-        private void RevealCell(int x, int y)
+        private void RevealCell(int x, int y, List<Point> previous = null)
         {
+            if (previous == null)
+            {
+                previous = new List<Point>();
+            }
             if (x >= 0 && x < Cells.GetLength(0) && y >= 0 && y < Cells.GetLength(1) 
                 && Cells[x,y].State != CellState.Flagged)
             {
@@ -73,18 +86,18 @@ namespace Minesweeper.Logic
                 }
                 else
                 {
-                    int surrounding = GetSurrounding(x, y);
-                    Cells[x, y].State = (CellState)surrounding;
-                    if (surrounding > 0)
+                    Cells[x, y].State = (CellState)Cells[x,y].Surrounding;
+                    if (Cells[x,y].Surrounding == 0)
                     {
-                        RevealCell(x, y + 1);
-                        RevealCell(x, y - 1);
-                        RevealCell(x - 1, y);
-                        RevealCell(x + 1, y);
-                        RevealCell(x - 1, y + 1);
-                        RevealCell(x + 1, y + 1);
-                        RevealCell(x - 1, y - 1);
-                        RevealCell(x + 1, y - 1);
+                        previous.Add(new Point(x, y));
+                        if(!previous.Contains(new Point(x, y+1))) RevealCell(x, y + 1, previous);
+                        if(!previous.Contains(new Point(x, y-1))) RevealCell(x, y - 1, previous);
+                        if(!previous.Contains(new Point(x-1, y))) RevealCell(x - 1, y, previous);
+                        if(!previous.Contains(new Point(x+1, y))) RevealCell(x + 1, y, previous);
+                        if(!previous.Contains(new Point(x-1, y+1))) RevealCell(x - 1, y + 1, previous);
+                        if(!previous.Contains(new Point(x+1, y+1))) RevealCell(x + 1, y + 1, previous);
+                        if(!previous.Contains(new Point(x-1, y-1))) RevealCell(x - 1, y - 1, previous);
+                        if(!previous.Contains(new Point(x+1, y-1))) RevealCell(x + 1, y - 1, previous);
                     }
                 }
             }

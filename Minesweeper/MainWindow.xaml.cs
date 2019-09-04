@@ -1,4 +1,5 @@
 ﻿using Minesweeper.Converters;
+using Minesweeper.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,46 +22,77 @@ namespace Minesweeper
     /// </summary>
     public partial class MainWindow : Window
     {
-        Logic.Grid MineSweeperGrid { get; } = new Logic.Grid();
+        CellGrid MineSweeperGrid { get; } = new Logic.CellGrid();
         CellStateToBrushConverter BrushConverter { get; } = new CellStateToBrushConverter();
         public MainWindow()
         {
             InitializeComponent();
             CreateGrid(10,10,15);
-            
+            this.KeyUp += KeyPressHandler;
         }
 
         public void CreateGrid(int width, int height, int mines)
         {
             MineSweeperGrid.GenerateCells(width, height, mines);
-            CellGrid.RowDefinitions.Clear();
+            CellContainerGrid.RowDefinitions.Clear();
             for (int y = 0; y < MineSweeperGrid.Cells.GetLength(0); y++)
             {
-                CellGrid.RowDefinitions.Add(new RowDefinition());
+                CellContainerGrid.RowDefinitions.Add(new RowDefinition());
             }
 
-            CellGrid.ColumnDefinitions.Clear();
+            CellContainerGrid.ColumnDefinitions.Clear();
             for (int x = 0; x < MineSweeperGrid.Cells.GetLength(1); x++)
             {
-                CellGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                CellContainerGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
 
             for (int y = 0; y < MineSweeperGrid.Cells.GetLength(0); y++)
             {
+                int tY = y;
                 for (int x = 0; x < MineSweeperGrid.Cells.GetLength(1); x++)
                 {
-                    Label label = new Label();
-                    label.Content = $"{x},{y}";
-                    label.Width = 50;
-                    label.Height = 50;
-                    label.DataContext = MineSweeperGrid.Cells[x, y];
-                    Binding b = new Binding("State");
-                    b.Converter = BrushConverter;
-                    label.SetBinding(Label.BackgroundProperty, b);
+                    int tX = x;
+                    Label label = new Label()
+                    {
+                        Width = 50,
+                        Height = 50,
+                        DataContext = MineSweeperGrid.Cells[x, y],
+                    };
+                    label.MouseEnter += (sender, args) => {
+
+                    };
+                    label.MouseLeave += (sender, args) => {
+
+                    };
+                    label.MouseLeftButtonUp += (sender, args) => {
+                        MineSweeperGrid.ClickCell(tX, tY);
+                    };
+                    Binding b = new Binding("State")
+                    {
+                        Converter = BrushConverter
+                    };
+                    label.SetBinding(Button.BackgroundProperty, b);
                     Grid.SetRow(label, y);
                     Grid.SetColumn(label, x);
-                    CellGrid.Children.Add(label);
+                    CellContainerGrid.Children.Add(label);
                 }
+            }
+        }
+
+        public void KeyPressHandler(object sender, KeyEventArgs args)
+        {
+            switch (args.Key)
+            {
+                case Key.Up:
+                    ViewWindow.Width += 5;
+                    ViewWindow.Height += 5;
+                    break;
+                case Key.Down:
+                    ViewWindow.Width -= ViewWindow.Width >= 5 ? 5 : 0;
+                    ViewWindow.Height -= ViewWindow.Height >= 5 ? 5 : 0;
+                    break;
+                default:
+                    break;
             }
         }
     }
